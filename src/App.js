@@ -17,6 +17,7 @@ function App() {
         .then((response) => response.json())
         .then((result) => {
           setWeather(result);
+          console.log(query)
           console.log("result", result);
           setQuery("");
         })
@@ -37,7 +38,7 @@ function App() {
             onChange={(e) => setQuery(e.target.value)}
             value={query}
             onKeyPress={search}
-          ><button onClick={search}> Search</button></input>
+          ></input><button onClick={search}>Fetch</button>
         </div>
         {weather && typeof weather.current !== "undefined" ? (
           <div id="weatherInfo">
