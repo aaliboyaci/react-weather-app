@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
-import { useState } from "react";
 
 const api = {
   key: "211e54d154e44485b47230652232305",
@@ -11,41 +10,47 @@ function App() {
   const [query, setQuery] = useState("");
   const [weather, setWeather] = useState(null);
 
-  const search = (evt) => {
-    if (evt.key === "Enter") {
-      fetch(`${api.base}/current.json?key=${api.key}&q=${query}&aqi=no`)
-        .then((response) => response.json())
-        .then((result) => {
-          setWeather(result);
-          console.log(query)
-          console.log("result", result);
-          setQuery("");
-        })
-        .catch((error) => {
-          console.error("Error fetching weather data:", error);
-        });
-    }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    search();
+  };
+
+  const search = () => {
+    fetch(`${api.base}/current.json?key=${api.key}&q=${query}&aqi=no`)
+      .then((response) => response.json())
+      .then((result) => {
+        setWeather(result);
+        setQuery("");
+      })
+      .catch((error) => {
+        console.error("Error fetching weather data:", error);
+      });
+  };
+
+  const handleInputChange = (event) => {
+    setQuery(event.target.value);
   };
 
   return (
     <div className="App">
       <div className="container">
         <h1>Weather App</h1>
-        <div id="header">
-          <input
-            type="text"
-            placeholder="Search..."
-            onChange={(e) => setQuery(e.target.value)}
-            value={query}
-            onKeyPress={search}
-          ></input><button onClick={search}>Fetch</button>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div id="header">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={query}
+              onChange={handleInputChange}
+            />
+            <button type="submit">Search</button>
+          </div>
+        </form>
         {weather && typeof weather.current !== "undefined" ? (
           <div id="weatherInfo">
             <p>
               <i>{weather.location.localtime}</i>
             </p>
-
             <h3>
               <i>
                 {weather.location.name}, {weather.location.country}
