@@ -37,7 +37,7 @@ function App() {
             onChange={(e) => setQuery(e.target.value)}
             value={query}
             onKeyPress={search}
-          ></input>
+          ><button onClick={search}> Search</button></input>
         </div>
         {weather && typeof weather.current !== "undefined" ? (
           <div id="weatherInfo">
